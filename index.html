@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Password Generator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+            max-width: 90%;
+            transition: all 0.3s ease;
+        }
+
+        .container:hover {
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        label {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .options {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .length-slider {
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .length-slider input {
+            width: 100%;
+        }
+
+        .length-value {
+            font-size: 18px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .password-display {
+            background-color: #f0f4f8;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            word-wrap: break-word;
+        }
+
+        .generate-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .generate-btn:hover {
+            background-color: #0056b3;
+            box-shadow: 0 8px 15px rgba(0, 91, 187, 0.4);
+        }
+
+        .generate-btn:active {
+            background-color: #003e8a;
+        }
+
+        .generate-btn:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Random Password Generator</h1>
+
+        <!-- Password Display -->
+        <div class="password-display" id="passwordDisplay">Your password will appear here</div>
+
+        <!-- Options -->
+        <div class="options">
+            <label>
+                <input type="checkbox" id="includeUppercase"> Include Uppercase Letters
+            </label><br>
+            <label>
+                <input type="checkbox" id="includeLowercase" checked> Include Lowercase Letters
+            </label><br>
+            <label>
+                <input type="checkbox" id="includeNumbers"> Include Numbers
+            </label><br>
+            <label>
+                <input type="checkbox" id="includeSymbols"> Include Symbols
+            </label>
+        </div>
+
+        <!-- Length Slider -->
+        <div class="length-slider">
+            <label for="lengthSlider">Password Length: <span class="length-value" id="lengthValue">12</span></label>
+            <input type="range" id="lengthSlider" min="6" max="32" value="12">
+        </div>
+
+        <!-- Generate Button -->
+        <button class="generate-btn" id="generateBtn">Generate Password</button>
+    </div>
+
+    <script>
+        const passwordDisplay = document.getElementById('passwordDisplay');
+        const lengthSlider = document.getElementById('lengthSlider');
+        const lengthValue = document.getElementById('lengthValue');
+        const includeUppercase = document.getElementById('includeUppercase');
+        const includeLowercase = document.getElementById('includeLowercase');
+        const includeNumbers = document.getElementById('includeNumbers');
+        const includeSymbols = document.getElementById('includeSymbols');
+        const generateBtn = document.getElementById('generateBtn');
+
+        // Character Sets
+        const uppercaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const lowercaseLetters = 'abcdefghijklmnopqrstuvwxyz';
+        const numbers = '0123456789';
+        const symbols = '!@#$%^&*()_+{}[]<>?,./';
+
+        // Update length value display when slider moves
+        lengthSlider.addEventListener('input', function() {
+            lengthValue.textContent = lengthSlider.value;
+        });
+
+        // Generate password on button click
+        generateBtn.addEventListener('click', function() {
+            const length = parseInt(lengthSlider.value);
+            let charSet = '';
+
+            // Build character set based on user preferences
+            if (includeUppercase.checked) charSet += uppercaseLetters;
+            if (includeLowercase.checked) charSet += lowercaseLetters;
+            if (includeNumbers.checked) charSet += numbers;
+            if (includeSymbols.checked) charSet += symbols;
+
+            // Ensure at least one option is selected
+            if (charSet === '') {
+                alert('Please select at least one option for the password.');
+                return;
+            }
+
+            // Generate random password
+            let password = '';
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * charSet.length);
+                password += charSet[randomIndex];
+            }
+
+            // Display generated password
+            passwordDisplay.textContent = password;
+        });
+    </script>
+
+</body>
+</html>
